@@ -4,5 +4,5 @@ It contains modified scripts originally provided by Omer Levy: https://bitbucket
 
 For questions about the programs (and particularly the modifications we made) in this repository please contact:
 
-Antske Fokkens: antske.fokkens@vu.nl
-Minh Le:	m.n.le@vu.nl
+- Antske Fokkens: antske.fokkens@vu.nl
+- Minh Le:	m.n.le@vu.nl
