@@ -24,6 +24,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -300,7 +301,12 @@ void TrainModel() {
   starting_alpha = alpha;
   wv = ReadVocab(wvocab_file);
   cv = ReadVocab(cvocab_file);
-  ReadParamInit(wv, cv, pinit_file);
+  char *dot = strrchr(pinit_file, '.');
+  if (dot && !strcmp(dot, ".txt")) { // text file
+	  ReadParamInitText(wv, cv, pinit_file);
+  } else { // assume binary
+	  ReadParamInitBinary(wv, cv, pinit_file);
+  }
   InitUnigramTable(cv);
   start = clock();
   for (a = 0; a < num_threads; a++) pthread_create(&pt[a], NULL, TrainModelThread, (void *)a);
@@ -385,7 +391,7 @@ int ArgPos(char *str, int argc, char **argv) {
   return -1;
 }
 
-void ReadParamInit(struct vocabulary *wv, struct vocabulary *cv, char *pinit_file) {
+int ReadParamInitBinary(struct vocabulary *wv, struct vocabulary *cv, char *pinit_file) {
    FILE *f;
    long long a, b;
    a = posix_memalign((void **)&syn0, 128, (long long)wv->vocab_size * layer1_size * sizeof(real));
@@ -402,6 +408,67 @@ void ReadParamInit(struct vocabulary *wv, struct vocabulary *cv, char *pinit_fil
         for (b = 0; b < layer1_size; b++) fread(&syn1neg[a * layer1_size + b], sizeof(real), 1, f);
     }
   fclose(f);
+}
+
+char *ignoreLF(char *word) { // fix some LF (ASCII 10) at the beginning of a word
+	while(word[0] == 10) {
+		word++;
+	}
+	return word;
+}
+
+int ReadParamInitText(struct vocabulary *wv, struct vocabulary *cv, char *pinit_file) {
+   FILE *f;
+   long long a, b, i, count, rows, cols;
+   real num;
+   char word[MAX_STRING];
+
+   f = fopen(pinit_file, "rb");
+   if (f == NULL) {
+     printf("Param initialization file not found: %s\n", pinit_file);
+     return -1;
+   }
+
+   fscanf(f, "%lld\t%lld", &rows, &cols);
+//   printf("%d\t%d\n", rows, cols);
+   assert(cols == layer1_size);
+   a = posix_memalign((void **)&syn0, 128, (long long)wv->vocab_size * layer1_size * sizeof(real));
+   count = 0;
+   for (a = 0; a < rows; a++) {
+	   fscanf(f, "%[^\t]", word);
+	   i = SearchVocab(wv, ignoreLF(word));
+//	   printf("%s\n", word);
+   	   if (i >= 0) {
+   		   count++;
+   		   for (b = 0; b < layer1_size; b++)
+   			   fscanf(f, "\t%f", &syn0[i * layer1_size + b]);
+   	   } else {
+   		   printf("Word not found in vocab: %s\n", word);
+   		   // still need to consume the input
+   		   for (b = 0; b < layer1_size; b++) fscanf(f, "\t%f", &num);
+   	   }
+       fscanf(f, "\n");
+   }
+   printf("Imported %d embedding vectors for word vocab.\n", count);
+
+   fscanf(f, "%lld\t%lld", &rows, &cols);
+   assert(cols == layer1_size);
+   a = posix_memalign((void **)&syn1neg, 128, (long long)cv->vocab_size * layer1_size * sizeof(real));
+   for (a = 0; a < rows; a++) {
+   	   fscanf(f, "%[^\t]", word);
+   	   i = SearchVocab(wv, ignoreLF(word));
+   	   if (i >= 0) {
+		   for (b = 0; b < layer1_size; b++)
+			   fscanf(f, "\t%f", &syn0[i * layer1_size + b]);
+   	   } else {
+   		   // still need to consume the input
+   		   printf("Word not found in vocab: %s, %d\n", word, (int)word[0]);
+   		   for (b = 0; b < layer1_size; b++) fscanf(f, "\t%f", &num);
+   	   }
+	   fscanf(f, "\n");
+    }
+   printf("Imported %d embedding vectors for context vocab.\n", count);
+   fclose(f);
 }
 
 int main(int argc, char **argv) {

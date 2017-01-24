@@ -7,26 +7,20 @@ from representations.explicit import PositiveExplicit
 from representations.matrix_serializer import save_vocabulary
 from representations.embedding import SVDEmbedding
 
-
-
-
-def print_out_matrix(mymatrix, iw, suffix, output_path, dim):
-    
-    outfile = open(output_path + suffix + '.txt', 'w')
-    outfile.write(str(dim) + '\n')
-    for i, scores in enumerate(mymatrix):
-        line = iw[i]
-        for score in scores:
-            line += '\t' + str(score)
-        outfile.write(line + '\n')
-    outfile.close()
-
-
+def print_out_matrices(words1, embs1, words2, embs2, output_path):
+    with open(output_path + ".txt", 'w') as outfile:
+        for words, embs in ((words1, embs1), (words2, embs2)):
+            outfile.write('%d\t%d\n' %embs.shape)
+            for word, vector in zip(words, embs):
+                outfile.write(word)
+                for num in vector:
+                    outfile.write('\t%f' %num)
+                outfile.write('\n')
 
 def main():
     args = docopt("""
     Usage:
-        pmi2svd.py [options] <pmi_path> <output_path>
+        pmi2svd_model_print.py [options] <pmi_path> <output_path>
     
     Options:
         --dim NUM    Dimensionality of eigenvectors [default: 500]
@@ -52,8 +46,12 @@ def main():
     save_vocabulary(output_path + '.words.vocab', explicit.iw)
     save_vocabulary(output_path + '.contexts.vocab', explicit.ic)
 
+    svd = SVDEmbedding(output_path, False, eig)
+    words, word_embeddings = explicit.iw, svd.m
     svd = SVDEmbedding(output_path, True, eig)
-    print_out_matrix(svd.m, explicit.iw, '.svd', output_path, dim)
+    contexts, context_embeddings = explicit.iw, svd.m
+    print_out_matrices(words, word_embeddings, 
+                       contexts, context_embeddings, output_path)
 
 
 if __name__ == '__main__':
