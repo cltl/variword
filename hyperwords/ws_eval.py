@@ -8,7 +8,7 @@ from representations.representation_factory import create_representation
 def main():
     args = docopt("""
     Usage:
-        ws_eval.py [options] <representation> <representation_path> <task_path> <resultsfile> <UUID>
+        ws_eval.py [options] <representation> <representation_path> <task_path> <resultsfile> <runresultsfile>
 
     Options:
         --neg NUM    Number of negative samples; subtracts its log from PMI (only applicable to PPMI) [default: 1]
@@ -20,7 +20,7 @@ def main():
     representation = create_representation(args)
     correlation = evaluate(representation, data)
     evaluate_to_file(representation, data, args['<resultsfile>'])
-    write_scores(correlation, args['<resultsfile>'], args['<UUID>'])  # write spearman scores to results.txt
+    write_scores(correlation, args['<resultsfile>'], args['<runresultsfile>'])  # write spearman scores to results.txt
 
     print args['<representation>'], args['<representation_path>'], '\t%0.3f' % correlation
 
@@ -58,7 +58,7 @@ def evaluate_to_file(representation, data, resultsfile):
         # outfile.write('spearman:'+'\t'+str(spearmanr(actual, expected)[0]))
 
 
-def write_scores(correlation, resultsfile, runid):
+def write_scores(correlation, resultsfile, runresfile):
     """
     Write spearman correlation to txt file.
 
@@ -69,7 +69,7 @@ def write_scores(correlation, resultsfile, runid):
 
     filename = os.path.basename(resultsfile)
 
-    with open('results/' + runid + '/results.txt', 'a') as outfile:
+    with open(runresfile, 'a') as outfile:
         outfile.write(str(filename))
         outfile.write('\t')
         outfile.write(str(correlation))

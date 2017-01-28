@@ -1,0 +1,58 @@
+Outline of experimental set up and steps taken.
+
+
+27.01.2017
+
+Commands for subcorpus creation from the shuffles wikipedia file (1.1M token):
+(N.B. for the wikipedia_shuffled file the ration token/sentence is 48token/sentence)
+1) head -170000 [wikipedia_shuffled] > out_head
+2) tail -170000 [wikipedia_shuffled] > out_tail
+3) cat out_head out_tail > wikipedia_shuffled_1.1M
+
+
+First results on the subcorpus have been created with Levy's default settings. We consider this an exploratory study.
+
+Our current hypotheses are:
+
+1. when trained on the full wikipedia set, we may still observe minor impact of initiation and example order for word to vec, but we expect that the model has converged by then; in the sense that there are no radically different sense representations to be found.
+2. with a corpussize comparable to the BNC, we expect to observe differences that can lead to word2vec sometimes being better and sometimes worse than count methods. We also expect that some words have noticeably different representations between models.
+3. we expect that the corpus sizes that are used for diachronic studies will lead to highly unstable results (based on both our preliminary observations on the ±136M token dataset and Hellrich and Hahn's observations)
+
+Next steps:
+
+1. We create models with the vanille settings defined in Levy et al. 2015 for a corpus of ±103M words.
+
+Settings: win=2, dyn=none, sub=none, neg=1, cds=1, w+c=w only, eig=0, nrm=none, svd-dimension=500, sgns-iterations=50
+
+Models:
+- ppmi
+- svd
+- 3 random initiation settings starting with examples on top
+- initiating with svd starting with example on top
+- the same 3 random initiation settings starting with examples on bottom
+- initiating with svd starting with example on bottom
+
+
+We then run the same experiment for the recommended word2vec settings.
+
+
+
+
+
+Scripts description:
+
+1. creating pairs and counts from clean corpus:
+
+clean_data_2_pairs_and_counts.sh cleancorpus outputdir window
+
+creates in the outputdir:
+- pairs: all word pairs in the defined window
+- counts.words.vocab: counts of each pair
+
+Notes:
+a) the only option given is the window, all others are defaults of hyperwords scripts.
+b) the counts are created by an alternative implementations of hyperwords/pairs2counts.py called pairs2counts_only_words.py. 
+This scripts only outputs the counts of words in a file. The counts of the context vocabulary are identical to the words vocabulary.
+We only output one to save space.
+
+

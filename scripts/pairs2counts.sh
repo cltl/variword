@@ -1,2 +1,2 @@
 #!/bin/sh
-sort -T . $1 | uniq -c
+sort -T /non-persistent $1 | uniq -c

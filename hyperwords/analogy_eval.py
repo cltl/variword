@@ -10,7 +10,7 @@ from representations.representation_factory import create_representation
 def main():
     args = docopt("""
     Usage:
-        analogy_eval.py [options] <representation> <representation_path> <task_path> <resultsfile> <UUID>
+        analogy_eval.py [options] <representation> <representation_path> <task_path> <resultsfile> <runresultsfile>
 
     Options:
         --neg NUM    Number of negative samples; subtracts its log from PMI (only applicable to PPMI) [default: 1]
@@ -23,7 +23,7 @@ def main():
     representation = create_representation(args)
     accuracy_add, accuracy_mul = evaluate(representation, data, xi, ix)
     accuracy_cosadd, accuracy_cosmul = results_to_file(representation, data, xi, ix, args['<resultsfile>'])
-    write_scores(accuracy_cosadd, accuracy_cosmul, args['<resultsfile>'], args['<UUID>'])
+    write_scores(accuracy_cosadd, accuracy_cosmul, args['<resultsfile>'], args['<runresultsfile>'])
     print args['<representation>'], args['<representation_path>'], '\t%0.3f' % accuracy_add, '\t%0.3f' % accuracy_mul
 
 
@@ -120,7 +120,7 @@ def guess(representation, sims, xi, a, a_, b):
 
     return b_add, b_mul
 
-def write_scores(accuracy_cosadd, accuracy_cosmul, resultsfile, runid):
+def write_scores(accuracy_cosadd, accuracy_cosmul, resultsfile, runresultsfile):
     """
     Write spearman correlation to txt file.
 
@@ -131,7 +131,7 @@ def write_scores(accuracy_cosadd, accuracy_cosmul, resultsfile, runid):
 
     filename = os.path.basename(resultsfile)
 
-    with open('results/' + runid + '/results.txt', 'a') as outfile:
+    with open(runresultsfile, 'a') as outfile:
         outfile.write(str(filename) + '_cosadd')
         outfile.write('\t')
         outfile.write(str(accuracy_cosadd))

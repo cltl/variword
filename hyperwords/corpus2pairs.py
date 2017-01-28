@@ -27,7 +27,6 @@ def main():
     subsample = float(args['--sub'])
     sub = subsample != 0
     d3l = args['--del']
-    
     vocab = read_vocab(corpus_file, thr)
     corpus_size = sum(vocab.values())
     

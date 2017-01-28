@@ -3,7 +3,7 @@ from sparsesvd import sparsesvd
 from docopt import docopt
 import numpy as np
 
-from representations.explicit import PositiveExplicit
+from representations.explicit_words_only import PositiveExplicit
 from representations.matrix_serializer import save_vocabulary
 from representations.embedding import SVDEmbedding
 
@@ -44,7 +44,6 @@ def main():
     np.save(output_path + '.s.npy', s)
     np.save(output_path + '.vt.npy', vt)
     save_vocabulary(output_path + '.words.vocab', explicit.iw)
-    save_vocabulary(output_path + '.contexts.vocab', explicit.ic)
 
     svd = SVDEmbedding(output_path, False, eig)
     words, word_embeddings = explicit.iw, svd.m
