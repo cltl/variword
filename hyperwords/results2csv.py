@@ -4,7 +4,7 @@ from docopt import docopt
 
 eval_sets = ["ws353sim","ws353rel","brunimen","radinskyturk","luongrare","hillsimlex","google-cosadd","google-cosmul","msr-cosadd","msr-cosmul"]
 
-models = ['PPMI','SVD','SGNSpinit1','SGNSpinit2','SGNSpinit3','SGNSsvd']
+models = ['PPMI','SVD','SGNSpinit1','SGNSpinit2','SGNSpinit3','SGNSsvd','SGNSpinit1-rev','SGNSpinit2-rev','SGNSpinit3-rev','SGNSsvd-rev']
 
 
 def main():
