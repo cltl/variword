@@ -1,0 +1,1 @@
+./run_experiment_vanille_settings.sh /data/wikipedia_shuffled_103Mw.txt /data/wiki_vanilla_103M/ ../results/
