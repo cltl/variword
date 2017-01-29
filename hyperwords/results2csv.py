@@ -70,7 +70,8 @@ def read_in_results(inputfile):
         if components[-1] == 'w2.tsv':
             model = components[-2]
         else:
-            model = components[-1].rstrip('.tsv')
+            model = components[-1].split('.')[0]
+    
         update_info(myresults, testset, model, parts[-1])
         
     resfile.close()
