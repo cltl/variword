@@ -1,5 +1,28 @@
 Outline of experimental set up and steps taken.
 
+31.01.2017
+
+Results were inspected yesterday and the outcome of the models trained on 103M words randomly selected by wikipedia perform drastically worst than the 130M news corpus.
+We found out the cleaning step was skipped and reran the vanille experiment with the cleaned data. Due to a typo in the script, the experiments with the reversed example order did not run.
+We ran those afterwards and corrected the bug in the script. Results with the clean corpus were similar (slightly better for most models, slightly worst for the best, overall still far below the news).
+
+Today, we are updating the script that runs experiments with corrected settings so that it also creates models that walk to the corpus in reversed order. We rerun the recommended setting on the clean corpus.
+The next step will be increasing the corpus. We will start by a corpus of 130M words (approximating the news corpus in size) and will then move on to larger corpora.
+
+
+
+29.01.2017
+
+The vanilla settings on the first corpus finished. Yesterday, we ran the same experiment using the recommended settings.
+These are:
+
+win=2, dyn=dirty, sub=1e-5, neg=5, cds=0.75, w+c=w only, eig=0, nrm=none, svd-dimension=500, sgns-iterations=50.
+The command used for both vanilla and recommended settings are stored under the run_ directory of the experiment in 'setup.txt'.
+We're adapting the run scripts now to always print the setup with the results for future experiments.
+
+We did not include training the SGNS models with flipped orders of examples yet. These experiments will be run now using the same initiations of the earlier models. We will then adapt the scripts so that these experiments are always run after the ones in original order.
+
+The experiments described above have been carried out.
 
 27.01.2017
 
