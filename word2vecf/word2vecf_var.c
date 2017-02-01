@@ -171,11 +171,16 @@ void *TrainModelThread(void *id) {
            l2 = target * layer1_size;
            f = 0;
            for (c = 0; c < layer1_size; c++) f += syn0[c + l1] * syn1neg[c + l2];
-           if (f > MAX_EXP) g = (label - 1) * alpha;
-           else if (f < -MAX_EXP) g = (label - 0) * alpha;
-           else g = (label - expTable[(int)((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]) * alpha;
-           for (c = 0; c < layer1_size; c++) neu1e[c] += g * syn1neg[c + l2];
-           for (c = 0; c < layer1_size; c++) syn1neg[c + l2] += g * syn0[c + l1];
+	   if (!isnan(f)) {
+		   if (f > MAX_EXP) g = (label - 1) * alpha;
+		   else if (f < -MAX_EXP) g = (label - 0) * alpha;
+		   else {
+			// printf("%f\t%d\n", f, (int)((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2)));
+			g = (label - expTable[(int)((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]) * alpha;
+		   }
+		   for (c = 0; c < layer1_size; c++) neu1e[c] += g * syn1neg[c + l2];
+		   for (c = 0; c < layer1_size; c++) syn1neg[c + l2] += g * syn0[c + l1];
+ 	    }
         }
         // Learn weights input -> hidden
         for (c = 0; c < layer1_size; c++) syn0[c + l1] += neu1e[c];
