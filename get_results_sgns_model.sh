@@ -12,7 +12,7 @@ suffix=$4
 wc=$5
 
 
-mkdir $RESULTSDIR/ws
+mkdir -p $RESULTSDIR/ws
 
 # ws353_similarity
 
@@ -42,7 +42,7 @@ echo "# Evaluate on Analogies"
 echo
 echo "Google Analogy Results"
 echo "----------------------"
-mkdir $RESULTSDIR/analogies
+mkdir -p $RESULTSDIR/analogies
 
 # Google
 
