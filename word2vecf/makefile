@@ -15,7 +15,7 @@ word2vecf : word2vecf.c vocab.c io.c
 create_init : create_init.c vocab.c io.c
 	$(CC) create_init.c vocab.c io.c -o create_init $(CFLAGS)
 word2vecf_var : word2vecf_var.c vocab.c io.c
-	$(CC) word2vecf_var.c vocab.c io.c -o word2vecf_var $(CFLAGS)
+	$(CC) word2vecf_var.c vocab.c io.c -g -o word2vecf_var $(CFLAGS)
 word2phrase : word2phrase.c
 	$(CC) word2phrase.c -o word2phrase $(CFLAGS)
 distance : distance.c
@@ -27,4 +27,4 @@ compute-accuracy : compute-accuracy.c
 	chmod +x *.sh
 
 clean:
-	rm -rf word2vec word2phrase distance word-analogy compute-accuracy count_and_filter word2vecf
+	rm -rf word2vec word2phrase distance word-analogy compute-accuracy count_and_filter word2vecf word2vecf_var create_init

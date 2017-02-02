@@ -1,5 +1,21 @@
 Outline of experimental set up and steps taken.
 
+02.02.2017
+
+The full set of experiments with vanille settings took approximately 14 hours to run. The recommended settings are significantly faster (around 2 hours without the svd initiated experiences), we will thus first run experiments with recommended settings only and then see which experiments we also want to run with 'vanilla' settings. 
+
+Experiments with svd initialization crashed: the word2vecf implementation could not handle non-values (which sometimes occur when the initiation is too good). This has now been corrected. The word2vec svd initiated experiments were run separately after the others had finished.
+
+The next steps are: 
+
+1. running experiments with the full corpus on an alternative VM, then start to reduce this corpus.
+2. in parallel; run experiments with increasingly large corpora on the smaller VM starting with ±135M words (comparable to the news corpus).
+
+We created a corpus of 135835265 tokens (comparable to news corpus in size). Taking:
+head -1420000
+tail -1420000
+
+
 31.01.2017
 
 Results were inspected yesterday and the outcome of the models trained on 103M words randomly selected by wikipedia perform drastically worst than the 130M news corpus.
@@ -9,6 +25,10 @@ We ran those afterwards and corrected the bug in the script. Results with the cl
 Today, we are updating the script that runs experiments with corrected settings so that it also creates models that walk to the corpus in reversed order. We rerun the recommended setting on the clean corpus.
 The next step will be increasing the corpus. We will start by a corpus of 130M words (approximating the news corpus in size) and will then move on to larger corpora.
 
+Double checked corpus: it had a little over 103M characters and only 16.3M tokens. Recreated corpus of 100M characters. Taking:
+head -1045500 
+tail -1045500
+of the shuffled wikipedia corpus. This results in slightly over 100M tokens after cleaning.
 
 
 29.01.2017
