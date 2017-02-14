@@ -33,6 +33,9 @@ class Embedding:
         """
         return self.represent(w1).dot(self.represent(w2))
 
+    def __call__(self, w1, w2):
+        return self.similarity(w1, w2)
+
     def closest(self, w, n=10):
         """
         Assumes the vectors have been normalized.
