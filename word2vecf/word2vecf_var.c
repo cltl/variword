@@ -33,7 +33,7 @@
 #include "vocab.h"
 #include "io.h"
 
-#define MAX_STRING 100
+#define MAX_STRING 500
 #define EXP_TABLE_SIZE 1000
 #define MAX_EXP 6
 #define MAX_SENTENCE_LENGTH 1000

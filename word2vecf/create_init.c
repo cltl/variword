@@ -5,7 +5,7 @@
 #include "vocab.h"
 #include "io.h"
 
-#define MAX_STRING 100
+#define MAX_STRING 500
 
 typedef float real;                    // Precision of float numbers
 
