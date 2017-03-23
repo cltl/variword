@@ -1,0 +1,1 @@
+./run_experiment_vanille_settings.sh /data/wikipedia_shuffled100Mtoks.txt.clean /data/wiki_100Mtok_vanilla/ results/

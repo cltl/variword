@@ -1,0 +1,1 @@
+./run_experiment_recommended_w2_settings.sh /data/wikipedia_200Mtok.txt.clean /data/wiki_200Mtok_rec/ results/
