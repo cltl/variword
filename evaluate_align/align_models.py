@@ -143,7 +143,10 @@ def similarity(word, embeddings):
 
     emb1, emb2 = embeddings
 
-    sim = emb1.represent(word).dot(emb1.represent(word))
+    sim = emb1.represent(word).dot(emb2.represent(word))
+
+    #sim = scipy.spatial.distance.cosine(emb1.represent(word), emb2.represent(word))
+
     return sim
 
 if __name__ == "__main__":

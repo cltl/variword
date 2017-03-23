@@ -37,3 +37,5 @@ Example:
 * sparsesvd
 * numpy
 * scipy
+* sklearn
+* pandas
