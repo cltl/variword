@@ -8,6 +8,8 @@ from __future__ import print_function
 import os
 import alignment
 import numpy as np
+import scipy
+from scipy.spatial import distance
 import re
 from docopt import docopt
 from representations.embedding import Embedding
@@ -134,6 +136,43 @@ def check_similarity(all_aligned_embeddings, vocab):
     return resultsdictionary
 
 
+def calculate_distance(all_aligned_embeddings, vocab):
+    """
+    Calculate distance for every word in the vocab between all models (aligned)
+    :param all_aligned_embeddings: list of tuples (modelname, embedding)
+    :param vocab:
+    :return: resultsdictionary. Every word is a key. Value is a dictionary of models and similarity.
+    """
+
+    results = []
+    resultsdictionary = defaultdict(dict)
+
+    with open(vocab) as vocabfile:
+        vocablist = vocabfile.read().split('\n')[:-1]
+
+    model_combinations = list(combinations(all_aligned_embeddings, 2))
+
+    for word in vocablist:
+        dists = []
+        for embeddingtuple in model_combinations:
+
+            models, embeddings = zip(*embeddingtuple)
+
+            dist = cosine_distinance(word, embeddings)
+            dists.append(dist)
+
+            resultsdictionary[word][models] = dist
+
+        results.append((word, dists))
+
+    print(sorted(results, key=lambda x: x[1])[:20])
+    print('vocab', len(vocablist), 'results', len(results))
+
+    return resultsdictionary
+
+
+
+
 def similarity(word, embeddings):
     """
     Compute similarity for a word in two embeddings by taking the dot product.
@@ -144,10 +183,23 @@ def similarity(word, embeddings):
     emb1, emb2 = embeddings
 
     sim = emb1.represent(word).dot(emb2.represent(word))
-
-    #sim = scipy.spatial.distance.cosine(emb1.represent(word), emb2.represent(word))
+    dist = scipy.spatial.distance.cosine(emb1.represent(word), emb2.represent(word))
 
     return sim
+
+def cosine_distinance(word, embeddings):
+    """
+    Compute distance for a word in two embeddings by taking the dot product.
+    :param embeddings: tuple of two embeddings
+    :return: similarity
+    """
+
+    emb1, emb2 = embeddings
+
+    dist = scipy.spatial.distance.cosine(emb1.represent(word), emb2.represent(word))
+
+    return dist
+
 
 if __name__ == "__main__":
 
@@ -160,14 +212,9 @@ if __name__ == "__main__":
     all_aligned_models = align_models(PATH, MATCHNAME, outfolder=outfolder)
 
     default_vocab = os.path.join(outfolder, MATCHNAME + '.aligned.words.vocab')
-    results = check_similarity(all_aligned_models, vocab=default_vocab)
-
+    results = calculate_distance(all_aligned_models, vocab=default_vocab)
     # make a panda out of it
     import pandas as pd
     df = pd.DataFrame.from_dict(results, orient='index')
     df.to_csv(os.path.join(outfolder, 'results.csv'), float_format='%.17g') # 17 is the standard python2 notation
 
-
-
-    # PATH = '/home/leon/Documenten/5.2_Machine_learning/3/histwords/MODELS/wiki_100M_recom/run.2017-02-01-10:05:16'
-    # MATCHNAME = 'sgns_rand_pinit'
