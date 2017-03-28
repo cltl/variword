@@ -4,15 +4,15 @@ from itertools import combinations
 
 
 
-models_ws353sim = glob.glob('results/run.2017-03-20-14:01:36/ws/ws353sim*')
-models_ws353rel = glob.glob('results/run.2017-03-20-14:01:36/ws/ws353rel*')
-models_brunimen = glob.glob('results/run.2017-03-20-14:01:36/ws/brunimen*')
-models_hillsimlex = glob.glob('results/run.2017-03-20-14:01:36/ws/hillsimlex*')
-models_luongrare = glob.glob('results/run.2017-03-20-14:01:36/ws/luongrare*')
-models_radinskyturk = glob.glob('results/run.2017-03-20-14:01:36/ws/radinskyturk*')
+models_ws353sim = glob.glob('results/run.2017-03-20-14:01:36/ws/ws353sim*SGNS*')
+models_ws353rel = glob.glob('results/run.2017-03-20-14:01:36/ws/ws353rel*SGNS*')
+models_brunimen = glob.glob('results/run.2017-03-20-14:01:36/ws/brunimen*SGNS*')
+models_hillsimlex = glob.glob('results/run.2017-03-20-14:01:36/ws/hillsimlex*SGNS*')
+models_luongrare = glob.glob('results/run.2017-03-20-14:01:36/ws/luongrare*SGNS*')
+models_radinskyturk = glob.glob('results/run.2017-03-20-14:01:36/ws/radinskyturk*SGNS*')
 
-models_google = glob.glob('results/run.2017-03-20-14:01:36/analogies/google*')
-models_msr = glob.glob('results/run.2017-03-20-14:01:36/analogies/msr*')
+models_google = glob.glob('results/run.2017-03-20-14:01:36/analogies/google*SGNS*')
+models_msr = glob.glob('results/run.2017-03-20-14:01:36/analogies/msr*SGNS*')
 def combinations_to_file_ws(model_list, outfile):
 
     for combination in combinations(model_list, 2):
@@ -32,7 +32,7 @@ def combinations_to_file_analogy(model_list, outfile):
         outfile.write('python hyperwords/analogy_eval_models.py $wc results/$UUID/analogies/'+model1+' results/$UUID/analogies/'+model2+' $RESULTSDIR/analogies/'+name+'$suffix.tsv $UUIDRES\n')
 
 
-with open('get_results_spearman.sh', 'w') as outfile:
+with open('get_results_spearman_models.sh', 'w') as outfile:
     outfile.write('echo "# Evaluate on Word Similarity"\n')
     outfile.write('echo\n')
     outfile.write('UUID=$1\n')
