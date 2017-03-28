@@ -46,4 +46,9 @@ echo "Google Analogy Results"
 echo "----------------------"
 mkdir -p $RESULTSDIR/analogies
 
+#Google
 python hyperwords/analogy_eval_models.py $wc results/$UUID/analogies/google_wc_SGNSpinit1.tsv results/$UUID/analogies/google_wc_SGNSpinit1-rev.tsv $RESULTSDIR/analogies/google_wc_SGNS$suffix.tsv $UUIDRES
+
+#MSR
+
+python hyperwords/analogy_eval_models.py $wc results/$UUID/analogies/msr_wc_SGNSpinit1.tsv results/$UUID/analogies/msr_wc_SGNSpinit1-rev.tsv $RESULTSDIR/analogies/msr_wc_SGNS$suffix.tsv $UUIDRES
