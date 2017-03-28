@@ -1,7 +1,7 @@
 """align_models
 
 Usage:
-    align_models.py <folder> <matchname>
+    align_models.py <modellist> <outputdir> 
 
 """
 from __future__ import print_function
@@ -10,24 +10,24 @@ import alignment
 import numpy as np
 import scipy
 from scipy.spatial import distance
-import re
 from docopt import docopt
 from representations.embedding import Embedding
 from itertools import combinations
 from collections import defaultdict
 
-def align_models(path, matchname, outfolder, add_context=True):
+def align_models(path, models, outfolder, add_context=True):
     """
-    Aligns a series of spins to each other.
-    :param path:
-    :param matchname:
+    Aligns a series of spins to each other. 
+    Stores them at `outfolder` and outputs a common vocabulary file to that folder. 
+    :param path: where to find the models
+    :param models: list of models to align
     :param outfolder:
     :param add_context:
     :return: all aligned embeddings in a list of tuples (modelname, embedding).
     """
 
     vocabulary = []
-    models = get_models(path, matchname)
+    # models = get_models(path, matchname)
     print(models)
 
     all_aligned_embeddings = []
@@ -55,7 +55,8 @@ def align_models(path, matchname, outfolder, add_context=True):
         all_aligned_embeddings.append((modelname, aligned_embedding))
 
     common_vocab = set.intersection(*vocabulary)
-    with open(os.path.join(outfolder, matchname + '.aligned.words.vocab'), 'w') as vocabfile:
+
+    with open(os.path.join(outfolder, 'aligned.common.vocab'), 'w') as vocabfile:
         for i in sorted(common_vocab):
             vocabfile.write(i)
             vocabfile.write('\n')
@@ -78,22 +79,22 @@ def save(aligned_embedding, model, outfolder):
             vocabfile.write(i)
             vocabfile.write('\n')
 
-def get_models(path, matchname):
+def get_models(list_of_models):
     """
-    Return a list of models in given directory path. Matchname is prefix.
-    :param path:
-    :param matchname:
-    :return:
+    Return a list of models in given directory path.
+    :param list_of_models: models from the input file
+    :return: filtered models for usage in the script
     """
     models = set()
-    for model in [m for m in os.listdir(path) if re.match(matchname + '\d' + '\.', m)]:
-        models.add(model.split('.')[0])
+    for model in list_of_models:
+        if model.endswith('.words.npy'):
+            models.add(model.split('.words.npy')[0])
 
-    return sorted(models)
+    return sorted(models, key=lambda x: x[::-1])  # alphabetical backwards sorted
 
 def align(embed1, embed2):
     """
-    Align embed 2 to embed1
+    Align embed2 to embed1
     :return: aligned_embedding
     """
     aligned_embedding = alignment.smart_procrustes_align(embed1, embed2)
@@ -158,7 +159,7 @@ def calculate_distance(all_aligned_embeddings, vocab):
 
             models, embeddings = zip(*embeddingtuple)
 
-            dist = cosine_distinance(word, embeddings)
+            dist = cosine_distance(word, embeddings)
             dists.append(dist)
 
             resultsdictionary[word][models] = dist
@@ -187,7 +188,7 @@ def similarity(word, embeddings):
 
     return sim
 
-def cosine_distinance(word, embeddings):
+def cosine_distance(word, embeddings):
     """
     Compute distance for a word in two embeddings by taking the dot product.
     :param embeddings: tuple of two embeddings
@@ -204,17 +205,29 @@ def cosine_distinance(word, embeddings):
 if __name__ == "__main__":
 
     arguments = docopt(__doc__)
+    MODELS = arguments['<modellist>']
+    OUTPUT = arguments['<outputdir>']
 
-    PATH = arguments['<folder>']
-    MATCHNAME = arguments['<matchname>']
-    outfolder = 'output'
+    if not os.path.exists(OUTPUT):
+        os.makedirs(OUTPUT)
 
-    all_aligned_models = align_models(PATH, MATCHNAME, outfolder=outfolder)
+    with open(MODELS) as infile:
+        list_of_models = infile.read().split('\n')[:-1]
+    models = get_models((list_of_models))
 
-    default_vocab = os.path.join(outfolder, MATCHNAME + '.aligned.words.vocab')
+    if os.path.isfile(models[0]):
+        path = None
+    else:
+        path = os.path.dirname(MODELS)
+    print('Model locations:', path)
+
+    all_aligned_models = align_models(path, models, outfolder=OUTPUT)
+
+    default_vocab = os.path.join(OUTPUT, 'aligned.common.vocab')
     results = calculate_distance(all_aligned_models, vocab=default_vocab)
+
     # make a panda out of it
     import pandas as pd
     df = pd.DataFrame.from_dict(results, orient='index')
-    df.to_csv(os.path.join(outfolder, 'results.csv'), float_format='%.17g') # 17 is the standard python2 notation
+    df.to_csv(os.path.join(OUTPUT, 'results.csv'), float_format='%.17g') # 17 is the standard python2 notation
 
