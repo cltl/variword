@@ -39,3 +39,11 @@ python hyperwords/ws_eval_models.py $wc results/$UUID/ws/luongrare_wc_SGNSpinit1
 # Radinsky M Turk
 
 python hyperwords/ws_eval_models.py $wc results/$UUID/ws/radinskyturk_wc_SGNSpinit1.tsv results/$UUID/ws/radinskyturk_wc_SGNSpinit1-rev.tsv $RESULTSDIR/ws/radinskyturk_wc_SGNS$suffix.tsv $UUIDRES
+
+echo "# Evaluate on Analogies"
+echo
+echo "Google Analogy Results"
+echo "----------------------"
+mkdir -p $RESULTSDIR/analogies
+
+python hyperwords/analogy_eval_models.py $wc results/$UUID/analogies/google_wc_SGNSpinit1.tsv results/$UUID/analogies/google_wc_SGNSpinit1-rev.tsv $RESULTSDIR/analogies/google_wc_SGNS$suffix.tsv $UUIDRES

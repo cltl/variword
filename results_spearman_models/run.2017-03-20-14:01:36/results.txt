@@ -1,7 +1,0 @@
-ws353sim_wc_SGNSpinit1_pinit2.tsv	0.897695686592
-ws353sim_wc_SGNSpinit1_pinit2.tsv	0.897695686592
-ws353rel_wc_SGNSpinit1_pinit2.tsv	0.891457987494
-brunimen_wc_SGNSpinit1_pinit2.tsv	0.932146970269
-hillsimlex_wc_SGNSpinit1_pinit2.tsv	0.939413441862
-luongrare_wc_SGNSpinit1_pinit2.tsv	0.903659817382
-radinskyturk_wc_SGNSpinit1_pinit2.tsv	0.883265229937
