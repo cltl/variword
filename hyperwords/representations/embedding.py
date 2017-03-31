@@ -19,6 +19,8 @@ class Embedding:
 
     def normalize(self):
         norm = np.sqrt(np.sum(self.m * self.m, axis=1))
+        print('Ignoring %d rows in embedding matrix' %len(np.nonzero(norm <= 0)))
+        norm[norm <= 0] = 1.0
         self.m = self.m / norm[:, np.newaxis]
 
     def represent(self, w):
