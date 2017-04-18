@@ -13,7 +13,6 @@ from eval import _safe_spearmanr, _safe_pearson, threshold
 import numpy as np
 from math import floor
 from eval import ordering
-from operator import itemgetter
 from eval.ordering import accuracy, score_with_tie_correction, score_naive
 from scipy.stats import rankdata
 
@@ -274,6 +273,27 @@ def print_histogram_nv(sim):
 #         print "%s\t%s\t%s\t%.4f\t%.4f" % x
     sys.stdout.write("Histogram (nv): ")
     print np.histogram(predicted)[0]
+
+
+def compare(sim1, sim2):
+    _init()
+    print "Compare using SimLex-999:"
+    scores1 = np.array([sim1((lemma1, pos), (lemma2, pos)) or -1000
+                        for lemma1, lemma2, pos, _ in data])
+    scores2 = np.array([sim2((lemma1, pos), (lemma2, pos)) or -1000 
+                        for lemma1, lemma2, pos, _ in data])
+    ranks1 = rankdata(scores1)
+    ranks2 = rankdata(scores2)
+    diffs_rank = np.absolute(ranks1 - ranks2)
+    diffs_score = np.absolute(scores1 - scores2)
+    print 'lemma1\tlemma2\tpos\trank_diff\tscore1\tscore2\trank1\trank2'
+    for i in sorted(range(len(data)), key=lambda x: (diffs_rank[x], diffs_score[x])):
+        if scores1[i] is not None and scores2[i] is not None:
+            lemma1, lemma2, pos, _ = data[i]
+            print('%s\t%s\t%s\t%d\t%.2f\t%.2f\t%d\t%d' 
+                  %(lemma1, lemma2, pos, diffs_rank[i], 
+                    scores1[i], scores2[i], ranks1[i], ranks2[i]))
+    sys.stdout.flush()
     
 
 if __name__ == '__main__':

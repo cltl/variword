@@ -7,10 +7,12 @@ import os
 import re
 import sys
 
+import numpy as np
 from nltk.corpus import wordnet as wn
 from eval import _safe_spearmanr 
 from collections import defaultdict
 assert wn.get_version() == '3.0'
+from scipy.stats import rankdata
 
 _home_dir = os.path.dirname(__file__)
 _data_path = os.path.join(_home_dir, 'MEN_dataset_lemma_form_%s')
@@ -97,3 +99,22 @@ def evaluate_and_print_nv(sim, dataset_name="full", verbose=False):
         print "\n".join("%s\t%s\t%f\t%f" %x 
                         for x in zip(b1s, b2s, sims, scores))
 
+
+def compare(sim1, sim2):
+    _init('full')
+    print "Compare using MEN:"
+    scores1 = np.array([sim1(l1, l2) or -1000 for l1, l2, _ in data])
+    scores2 = np.array([sim2(l1, l2) or -1000 for l1, l2, _ in data])
+    ranks1 = rankdata(scores1)
+    ranks2 = rankdata(scores2)
+    diffs_rank = np.absolute(ranks1 - ranks2)
+    diffs_score = np.absolute(scores1 - scores2)
+    print 'lemma1\tlemma2\tpos\trank_diff\tscore1\tscore2\trank1\trank2'
+    for i in sorted(range(len(data)), key=lambda x: (diffs_rank[x], diffs_score[x])):
+        if scores1[i] is not None and scores2[i] is not None:
+            l1, l2, _ = data[i]
+            print('%s\t%s\t%s\t%s\t%d\t%.2f\t%.2f\t%d\t%d' 
+                  %(l1[0], l1[1], l2[0], l2[1], diffs_rank[i], 
+                    scores1[i], scores2[i], ranks1[i], ranks2[i]))
+    sys.stdout.flush()
+    
