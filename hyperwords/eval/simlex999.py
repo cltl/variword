@@ -277,7 +277,7 @@ def print_histogram_nv(sim):
 
 def compare(sim1, sim2):
     _init()
-    print "Compare using SimLex-999:"
+    print "\n\n\nCompare using SimLex-999:"
     scores1 = np.array([sim1((lemma1, pos), (lemma2, pos)) or -1000
                         for lemma1, lemma2, pos, _ in data])
     scores2 = np.array([sim2((lemma1, pos), (lemma2, pos)) or -1000 

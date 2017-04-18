@@ -102,14 +102,14 @@ def evaluate_and_print_nv(sim, dataset_name="full", verbose=False):
 
 def compare(sim1, sim2):
     _init('full')
-    print "Compare using MEN:"
+    print "\n\n\nCompare using MEN:"
     scores1 = np.array([sim1(l1, l2) or -1000 for l1, l2, _ in data])
     scores2 = np.array([sim2(l1, l2) or -1000 for l1, l2, _ in data])
     ranks1 = rankdata(scores1)
     ranks2 = rankdata(scores2)
     diffs_rank = np.absolute(ranks1 - ranks2)
     diffs_score = np.absolute(scores1 - scores2)
-    print 'lemma1\tlemma2\tpos\trank_diff\tscore1\tscore2\trank1\trank2'
+    print 'lemma1\tpos1\tlemma2\tpos2\trank_diff\tscore1\tscore2\trank1\trank2'
     for i in sorted(range(len(data)), key=lambda x: (diffs_rank[x], diffs_score[x])):
         if scores1[i] is not None and scores2[i] is not None:
             l1, l2, _ = data[i]
