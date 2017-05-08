@@ -52,7 +52,8 @@ def align_models(path, models, outfolder, add_context=True):
 
         # But also add it to a list of embeddings for comparing the similarity between models.
         # Then we don't have to load it again.
-        all_aligned_embeddings.append((modelname, aligned_embedding))
+	red_modelname = modelname.split('/')[-1]
+        all_aligned_embeddings.append((red_modelname, aligned_embedding))
 
     common_vocab = set.intersection(*vocabulary)
 
@@ -72,9 +73,10 @@ def save(aligned_embedding, model, outfolder):
     :return: None
     """
 
-    np.save(os.path.join(outfolder, model + '.aligned.words.npy'), aligned_embedding.m)
+    model_name = model.split('/')[-1]
+    np.save(os.path.join(outfolder, model_name + '.aligned.words.npy'), aligned_embedding.m)
 
-    with open(os.path.join(outfolder, model + '.aligned.words.vocab'), 'w') as vocabfile:
+    with open(os.path.join(outfolder, model_name + '.aligned.words.vocab'), 'w') as vocabfile:
         for i in aligned_embedding.iw:
             vocabfile.write(i)
             vocabfile.write('\n')
@@ -212,7 +214,8 @@ if __name__ == "__main__":
         os.makedirs(OUTPUT)
 
     with open(MODELS) as infile:
-        list_of_models = infile.read().split('\n')[:-1]
+        list_of_models = infile.read().split('\n')
+    list_of_models = [m for m in list_of_models if m]
     models = get_models((list_of_models))
 
     if os.path.isfile(models[0]):
