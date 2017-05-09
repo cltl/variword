@@ -27,9 +27,7 @@ echo "./run_experiment_recommended_w2_settings.sh $1 $2 $3" > $RESDIR$UUID/setup
 echo 'Done evaluating ppmi and svd'
 
 #4 initiate embeddings for word2vec
-./initiate_word2vec.sh $MODELDIR/counts.words.vocab $MODELDIR/pinit1
-./initiate_word2vec.sh $MODELDIR/counts.words.vocab $MODELDIR/pinit2
-./initiate_word2vec.sh $MODELDIR/counts.words.vocab $MODELDIR/pinit3
+
 ./initiate_word2vec.sh $MODELDIR/counts.words.vocab $MODELDIR/pinit4
 ./initiate_word2vec.sh $MODELDIR/counts.words.vocab $MODELDIR/pinit5
 ./initiate_word2vec.sh $MODELDIR/counts.words.vocab $MODELDIR/pinit6
@@ -41,27 +39,6 @@ echo 'Done evaluating ppmi and svd'
 #5 create and evaluate word2vec with all 3 random initiations and svd
 # settings: size=500, neg=1, iters=50
 # create_word2vec_with_init.sh pairs voc init out size neg iter
-./create_word2vec_with_init.sh $MODELDIR/pairs $MODELDIR/counts.words.vocab $MODELDIR/pinit1 $MODELDIR/sgns_rand_pinit1 500 1 50
-python hyperwords/text2numpy.py $MODELDIR/sgns_rand_pinit1.words
-python hyperwords/text2numpy.py $MODELDIR/sgns_rand_pinit1.contexts
-./get_results_sgns_model.sh $UUID $MODELDIR/sgns_rand_pinit1 $RESDIR pinit1
-
-
-echo 'Pinit 1 has been evaluated'
-
-./create_word2vec_with_init.sh $MODELDIR/pairs $MODELDIR/counts.words.vocab $MODELDIR/pinit2 $MODELDIR/sgns_rand_pinit2 500 1 50
-python hyperwords/text2numpy.py $MODELDIR/sgns_rand_pinit2.words
-python hyperwords/text2numpy.py $MODELDIR/sgns_rand_pinit2.contexts
-./get_results_sgns_model.sh $UUID $MODELDIR/sgns_rand_pinit2 $RESDIR pinit2
-
-echo 'Pinit 2 has been evaluated'
-
-./create_word2vec_with_init.sh $MODELDIR/pairs $MODELDIR/counts.words.vocab $MODELDIR/pinit3 $MODELDIR/sgns_rand_pinit3 500 1 50
-python hyperwords/text2numpy.py $MODELDIR/sgns_rand_pinit3.words
-python hyperwords/text2numpy.py $MODELDIR/sgns_rand_pinit3.contexts
-./get_results_sgns_model.sh $UUID $MODELDIR/sgns_rand_pinit3 $RESDIR pinit3
-
-echo 'Pinit 3 has been evaluated'
 
 ./create_word2vec_with_init.sh $MODELDIR/pairs $MODELDIR/counts.words.vocab $MODELDIR/pinit4 $MODELDIR/sgns_rand_pinit4 500 1 50
 python hyperwords/text2numpy.py $MODELDIR/sgns_rand_pinit4.words
@@ -128,27 +105,6 @@ tac $MODELDIR/pairs-orig > /data/pairs
 mv /data/pairs $MODELDIR/pairs
 
 
-./create_word2vec_with_init.sh $MODELDIR/pairs $MODELDIR/counts.words.vocab $MODELDIR/pinit1 $MODELDIR/sgns_rand_pinit1-rev 500 1 50
-python hyperwords/text2numpy.py $MODELDIR/sgns_rand_pinit1-rev.words
-python hyperwords/text2numpy.py $MODELDIR/sgns_rand_pinit1-rev.contexts
-./get_results_sgns_model.sh $UUID $MODELDIR/sgns_rand_pinit1-rev $RESDIR pinit1-rev
-
-
-echo 'Pinit 1-rev has been evaluated'
-
-./create_word2vec_with_init.sh $MODELDIR/pairs $MODELDIR/counts.words.vocab $MODELDIR/pinit2 $MODELDIR/sgns_rand_pinit2-rev 500 1 50
-python hyperwords/text2numpy.py $MODELDIR/sgns_rand_pinit2-rev.words
-python hyperwords/text2numpy.py $MODELDIR/sgns_rand_pinit2-rev.contexts
-./get_results_sgns_model.sh $UUID $MODELDIR/sgns_rand_pinit2-rev $RESDIR pinit2-rev
-
-echo 'Pinit 2-rev has been evaluated'
-
-./create_word2vec_with_init.sh $MODELDIR/pairs $MODELDIR/counts.words.vocab $MODELDIR/pinit3 $MODELDIR/sgns_rand_pinit3-rev 500 1 50
-python hyperwords/text2numpy.py $MODELDIR/sgns_rand_pinit3-rev.words
-python hyperwords/text2numpy.py $MODELDIR/sgns_rand_pinit3-rev.contexts
-./get_results_sgns_model.sh $UUID $MODELDIR/sgns_rand_pinit3-rev $RESDIR pinit3-rev
-
-echo 'Pinit 3-rev has been evaluated'
 
 ./create_word2vec_with_init.sh $MODELDIR/pairs $MODELDIR/counts.words.vocab $MODELDIR/pinit4 $MODELDIR/sgns_rand_pinit4-rev 500 1 50
 python hyperwords/text2numpy.py $MODELDIR/sgns_rand_pinit4-rev.words
