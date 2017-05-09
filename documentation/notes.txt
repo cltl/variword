@@ -1,5 +1,86 @@
 Outline of experimental set up and steps taken.
 
+10.03.2017
+
+120 000 tokens (variae corpus)
+
+head -1250
+tail -1250
+
+22.02.2017
+
+750M words corpus:
+
+head -7840000 
+tail -7840000
+
+wc:
+
+15.02.2017
+
+Running pmi/svd model, results in error:
+
+/home/ubuntu/variword/hyperwords/representations/embedding.py:22: RuntimeWarning: invalid value encountered in divide
+  self.m = self.m / norm[:, np.newaxis]
+
+
+13.02.2017
+
+400M words done. Changed script so that it writes output to /data/ first (seems to avoid some issues with rights).
+About to run 500M, then moving on to somewhat bigger steps (intermediate steps maybe filled later).
+
+500M words corpus:
+
+head -5228000
+tail -5228000
+
+
+
+
+06.02.2017
+
+Typo found in get_results_ppmi_svd: neg set to 1 instead of 5. The evaluation script for 300M and smaller corpora must be rerun for svd experiments.
+
+Evaluation 400W; with typo corrected. Following error reported (for all evaluations):
+/home/ubuntu/variword/hyperwords/representations/embedding.py:22: RuntimeWarning: invalid value encountered in divide
+  self.m = self.m / norm[:, np.newaxis]
+
+
+05.02.2017
+
+
+For 300M, we used:
+
+head -3137000
+tail -3137000
+
+For 400M:
+
+head -4182000
+tail -4182000
+
+
+04.02.2017
+
+Ran experiment recommended with 200M tokens; similar differences observed; clear higher results for each method.
+
+tail -2091000
+head -2091000
+
+
+
+03.02.2017
+
+Moved previous experiments to VM and launched experiment with ±136M tokens and recommended settings. First incoming results are slightly higher.
+Next steps for smaller scale experiments, once this is done (continuing with recommended settings):
+
+200M tokens
+300M tokens
+500M tokens
+
+In the meantime, an experiment with the full corpus is also launched (pairs2count script crashed on previous trials, issues with tmp/ dir and access rights solved now).
+
+
 02.02.2017
 
 The full set of experiments with vanille settings took approximately 14 hours to run. The recommended settings are significantly faster (around 2 hours without the svd initiated experiences), we will thus first run experiments with recommended settings only and then see which experiments we also want to run with 'vanilla' settings. 
