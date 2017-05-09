@@ -15,14 +15,21 @@ mkdir -p $RESDIR$UUID
 echo "./run_experiment_recommended_w2_settings.sh $1 $2 $3" > $RESDIR$UUID/setup.txt 
 
 #1. create pairs (win=2, dyn=dirty, sub=10^-5) and counts
-./clean_data_2_sub_dirty_pairs_and_counts.sh $IN $MODELDIR 2 1e-5
+./clean_data_2_sub_dirty_pairs_and_counts.sh $IN /data/ 2 1e-5
 
 #2 create ppmi and svd models (neg=5, cds=0.75, eig=0, dim=500)
 # get_ppmi_and_svd_print_out.sh dir cds dim neg eig
-./get_ppmi_and_svd_print_out.sh $MODELDIR 0.75 500 5 0.0
+./get_ppmi_and_svd_print_out.sh /data/ 0.75 500 5 0.0
+
+#4 move data to MODELDIR
+
+mv /data/pairs $MODELDIR
+mv /data/counts* $MODELDIR
+mv /data/pmi* $MODELDIR
+mv /data/svd* $MODELDIR
 
 #3 get results for ppmi and svd models
-./get_results_ppmi_svd.sh $UUID $MODELDIR $RESDIR 1 0.0 
+./get_results_ppmi_svd.sh $UUID $MODELDIR $RESDIR 5 0.0 
 
 echo 'Done evaluating ppmi and svd'
 

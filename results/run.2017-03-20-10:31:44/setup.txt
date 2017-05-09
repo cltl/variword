@@ -1,0 +1,1 @@
+./run_experiment_from_model_creation_rec_w2.sh /data/full_wiki results/ 
