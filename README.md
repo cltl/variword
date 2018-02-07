@@ -16,6 +16,12 @@ For questions about the programs (and particularly the modifications we made) in
     scripts/clean_corpus.sh $CORPUS > $CORPUS.clean
 ```
 
+### Build our modified version of word2vec
+
+cd word2vecf
+sudo apt-get install build-essential libc6-dev
+make
+
 ### Run the pipeline
 
 Then start the pipeline:
