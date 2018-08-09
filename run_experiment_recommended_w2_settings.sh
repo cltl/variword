@@ -15,18 +15,18 @@ mkdir -p $RESDIR$UUID
 echo "./run_experiment_recommended_w2_settings.sh $1 $2 $3" > $RESDIR$UUID/setup.txt 
 
 #1. create pairs (win=2, dyn=dirty, sub=10^-5) and counts
-./clean_data_2_sub_dirty_pairs_and_counts.sh $IN /data/ 2 1e-5
+./clean_data_2_sub_dirty_pairs_and_counts.sh $IN $DIR 2 1e-5
 
 #2 create ppmi and svd models (neg=5, cds=0.75, eig=0, dim=500)
 # get_ppmi_and_svd_print_out.sh dir cds dim neg eig
-./get_ppmi_and_svd_print_out.sh /data/ 0.75 500 5 0.0
+./get_ppmi_and_svd_print_out.sh $DIR 0.75 500 5 0.0
 
 #4 move data to MODELDIR
 
-mv /data/pairs $MODELDIR
-mv /data/counts* $MODELDIR
-mv /data/pmi* $MODELDIR
-mv /data/svd* $MODELDIR
+mv $DIR/pairs $MODELDIR
+mv $DIR/counts* $MODELDIR
+mv $DIR/pmi* $MODELDIR
+mv $DIR/svd* $MODELDIR
 
 #3 get results for ppmi and svd models
 ./get_results_ppmi_svd.sh $UUID $MODELDIR $RESDIR 5 0.0 
@@ -69,8 +69,8 @@ python hyperwords/text2numpy.py $MODELDIR/sgns_svd.contexts
 ./get_results_sgns_model.sh $UUID $MODELDIR/sgns_svd $RESDIR svd
 
 cp $MODELDIR/pairs $MODELDIR/pairs-orig
-tac $MODELDIR/pairs-orig > /data/pairs
-mv /data/pairs $MODELDIR/pairs
+tac $MODELDIR/pairs-orig > $DIR/pairs
+mv $DIR/pairs $MODELDIR/pairs
 
 
 ./create_word2vec_with_init.sh $MODELDIR/pairs $MODELDIR/counts.words.vocab $MODELDIR/pinit1 $MODELDIR/sgns_rand_pinit1-rev 500 1 50
