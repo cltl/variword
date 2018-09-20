@@ -1,39 +1,41 @@
-# Commands used to obtain the wikipedia dataset
+# Commands used to obtain to pre-preprocess the Wikipedia corpus
 # Author: Tommaso Caselli - January 2017
+# Update 2018-09-13
 
-# download the latest wikipedia dump - our version: en-wiki dump 2017-01-12
+1) Download the Wikipedia Extractor: git clone https://github.com/attardi/wikiextractor
+- Wikipedia Extractor Documentation: http://medialab.di.unipi.it/wiki/Wikipedia_Extractor 
+- Wikipedia Extractor runs with python 2.*
 
-wget https://dumps.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2
+2) Place in the Wikipedia Extractor folder the following scripts contained in ./pre_processing_workspace :
+- wikipedia-data.bash
+- clean_corpus.sh
+- remove_duplicate_lines.py
+- create_subcorpora.sh
+- the MOSES tokenizer folder
 
-# Extract wikipedia pages only 
-# Download the Wikipedia Extractor: git clone https://github.com/attardi/wikiextractor
-# Wikipedia Extractor Documentation: http://medialab.di.unipi.it/wiki/Wikipedia_Extractor 
-# Wikipedia Extractor runs with python 2.*
 
-# Create folder to store the cleaned wikipedia data
-mkdir wikipedia-out 
+3) Run wikipedia-data.bash
+- it will download the latest version of Wikipedia (our version: en-wiki dump 2018-08-01 - to fully replicate the experiments)
+- it will create the wikipedia-dump and wikipedia-out folder
+- it will runs Wikipedia Extractor and merge the results
+- Output: the cleaned version of Wikipedia (only Wikipedia pages), ordered alphabetically. File: wikipages_full_ordered.txt
 
-python WikiExtractor.py -c -o wikipedia-out enwiki-latest-pages-articles.xml.bz2
+4) Run clean_corpus.sh - input file: wikipages_full_ordered.txt
+- coversion to ASCII
+- tokenization with MOSES tokenizer
+- Punctuation removal and sentence splitting
+- duplicate sentence removal
+- lowercasing
+- shuffle the data
 
-# Merge all extracted pages from wikipedia into a unique compressed file
+Each step will produce an output file.
 
-cat ./*/*.bz2 > [outFile].bz2
+5) Run create_subcorpora.sh
+- in our version of Wikipedia, we computed the word/sentence ration by means of wc
+- wc -l = # of sentences
+- wc -w = # of words
+- given the word/sentence ration, we extracted head and tail portions of the shuffled and cleaned version 
+of Wikipedia to generate the subcorpora
 
-# De-compress the merged wikipedia pages - the sise of the file is about 12GB
 
-bzip2 -d [outFile].bz2 
-
-# Clean the merged wikipedia pages by:
-# 1) remove all blank lines
-# 2) remove all lines containing tag data from WikiExtractor.py
-# 3) all words in lower case
-# Notice: the output file is a file which preserved the order in which the WikiExtractor tool has extracted and cleaned the
-# wikipedia pages. Size of the cleaned file: 11GB
-
-sed '/^$/d' [outFile] | sed '/^<doc/d' | sed '/^<\/doc>/d' | tr A-Z a-z  > [outFile]_ordered.txt
-
-# Shuffle order. Notice: sentence boundary corresponds to newlines in the cleaned files. This means that
-# paragraphs may contain more than one sentence.
-
-perl -MList::Util=shuffle -e 'print shuffle(<STDIN>);' < [outFile]_ordered.txt > [outFile]_shuffled.txt
 
