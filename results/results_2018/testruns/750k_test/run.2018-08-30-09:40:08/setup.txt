@@ -1,0 +1,1 @@
+./run_experiment_recommended_w2_settings.sh ../scistor/group/projects/variword/wikipedia-material/wikiextractor/wikipedia-subcorpora/750k.txt ../scistor/group/projects/variword/exps_20180830/750k/data/ ../scistor/group/projects/variword/exps_20180830/750k/results/

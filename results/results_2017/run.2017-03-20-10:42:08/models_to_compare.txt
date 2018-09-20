@@ -1,0 +1,8 @@
+/home/ubuntu/scistor1/group/projects/variword/wikipedia-material/wiki_experiments/wiki5Mtok_recommended/run.2017-03-20-10:42:08/sgns_rand_pinit1.words.npy
+/home/ubuntu/scistor1/group/projects/variword/wikipedia-material/wiki_experiments/wiki5Mtok_recommended/run.2017-03-20-10:42:08/sgns_rand_pinit1-rev.words.npy
+/home/ubuntu/scistor1/group/projects/variword/wikipedia-material/wiki_experiments/wiki5Mtok_recommended/run.2017-03-20-10:42:08/sgns_rand_pinit2.words.npy
+/home/ubuntu/scistor1/group/projects/variword/wikipedia-material/wiki_experiments/wiki5Mtok_recommended/run.2017-03-20-10:42:08/sgns_rand_pinit2-rev.words.npy
+/home/ubuntu/scistor1/group/projects/variword/wikipedia-material/wiki_experiments/wiki5Mtok_recommended/run.2017-03-20-10:42:08/sgns_rand_pinit3.words.npy
+/home/ubuntu/scistor1/group/projects/variword/wikipedia-material/wiki_experiments/wiki5Mtok_recommended/run.2017-03-20-10:42:08/sgns_rand_pinit3-rev.words.npy
+/home/ubuntu/scistor1/group/projects/variword/wikipedia-material/wiki_experiments/wiki5Mtok_recommended/run.2017-03-20-10:42:08/sgns_svd.words.npy
+/home/ubuntu/scistor1/group/projects/variword/wikipedia-material/wiki_experiments/wiki5Mtok_recommended/run.2017-03-20-10:42:08/sgns_svd-rev.words.npy

@@ -1,0 +1,2 @@
+sudo ./run_experiment_recommended_w2_settings.sh /data/wikipedia_shuffled_103Mw.txt /data/wiki_recommended_103M/ ../results/
+

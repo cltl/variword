@@ -1,0 +1,1 @@
+./run_experiment_vanille_settings.sh data/wikipedia_shuffled20.5Mtok.txt data/wiki20.5Mktok_vanilla results/

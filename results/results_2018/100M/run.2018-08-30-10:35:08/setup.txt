@@ -1,0 +1,1 @@
+./run_experiment_recommended_w2_settings.sh ../100M/100M.txt ../100M/data/ ../100M/results/
