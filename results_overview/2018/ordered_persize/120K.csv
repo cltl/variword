@@ -1,0 +1,9 @@
+model,ws353sim,ws353rel,brunimen,radinskyturk,luongrare,hillsimlex,google_cosadd,google_cosmul,msr_cosadd,msr_cosmul
+wc_SGNSpinit1.tsv,nan,nan,nan,nan,nan,nan,0.0,0.0,0.0015,0.0015
+wc_SGNSpinit3-rev.tsv,nan,nan,nan,nan,nan,nan,0.0,0.0,0.00075,0.00075
+eig_SVD_w2.tsv,nan,nan,nan,nan,nan,nan,0.0,0.0,0.0,0.0
+wc_SGNSpinit1-rev.tsv,nan,nan,nan,nan,nan,nan,0.0,0.0,0.00075,0.00075
+neg_PPMI_w2.tsv,nan,nan,nan,nan,nan,nan,0.0,0.0,0.0,0.0
+wc_SGNSpinit2-rev.tsv,nan,nan,nan,nan,nan,nan,0.0,0.0,0.00075,0.00075
+wc_SGNSpinit3.tsv,nan,nan,nan,nan,nan,nan,0.0,0.0,0.0015,0.0015
+wc_SGNSpinit2.tsv,nan,nan,nan,nan,nan,nan,0.0,0.0,0.0015,0.0015
