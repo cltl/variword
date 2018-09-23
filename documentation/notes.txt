@@ -1,5 +1,59 @@
 Outline of experimental set up and steps taken.
 
+06.09.2018
+
+Currently running:
+
+135M
+
+Next:
+
+last two experiments 200M
+
+
+Rerun in previous days: 100M and 200M.
+200M ran into memory problems for the last two experiments (to be ran later).
+We need to run this storing the data under / (using /data as before), but this means running under sudo.
+We need to figure out how we can run under sudo and use the right environment (seems like sudo makes python go back to default)
+
+PLAN:
+First running all experiments with smaller datasets (stepwise upto 135M tokens), then fix sudo problem and move on to bigger ones.
+
+Done:
+
+creatig 135M:
+
+head -3211500
+tail -3211500
+
+75M: first minor results for luong.
+
+creating 75M:
+
+head -1786000
+tail -1786000
+
+
+50M: only luong rare has no real results, others are increasing
+
+20M: as 15M.
+
+15M: most results are actual results (though naturally low); only Luong rare words nothing and analogy extremely low
+
+5M: still some 0 results, but first positive correlations shown, otherwise no problems.
+
+2M: lot of 0 and negative results, otherwise no problem
+
+1M: lot of 0 results, otherwise no problem 
+
+created by:
+
+head -23700
+tail -23700
+
+750k: lot of 0 results, otherwise no problem
+120K: problem with running SVD initiated experiment: seems like dimensions don't match (why not?)
+
 10.03.2017
 
 120 000 tokens (variae corpus)
