@@ -1,3 +1,11 @@
+## Important Note
+
+This repository contains code written by third parties in addition to our own. Please make sure to credit the right people when using (parts of) this code. In case of doubt, please ask (antske.fokkens@vu.nl).
+
+## Warning
+
+This is word in progress! As you can probably see, this repository has not been cleaned (yet) and documentation is (still) limited.
+
 This repository provides the experimental setup for studying the impact of initialization and the order of examples while training word2vec.
 
 It contains modified scripts originally provided by Omer Levy: https://bitbucket.org/omerlevy/hyperwords
